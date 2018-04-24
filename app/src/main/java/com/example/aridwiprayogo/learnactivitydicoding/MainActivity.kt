@@ -1,7 +1,6 @@
 package com.example.aridwiprayogo.learnactivitydicoding
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
@@ -16,9 +15,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         btn_calculate.setOnClickListener(this)
-        if (savedInstanceState!=null){
-            val hasil = savedInstanceState.getString(STATE_HASIL)
-            tv_result.setText(hasil)
+        savedInstanceState?.let { @Suppress("NAME_SHADOWING") savedInstanceState->
+            tv_result.text = savedInstanceState.getString(STATE_HASIL)
         }
     }
 
@@ -51,8 +49,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+    override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putString(STATE_HASIL, tv_result.text.toString())
-        super.onSaveInstanceState(outState, outPersistentState)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        tv_result.text = savedInstanceState?.getString(STATE_HASIL)
     }
 }
